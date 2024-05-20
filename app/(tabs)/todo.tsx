@@ -1,5 +1,5 @@
 import { ThemedText } from "@/components/ThemedText";
-import { ScrollView } from "react-native-gesture-handler";
+import { ScrollView } from "react-native";
 import { StyleSheet, Image, Platform } from "react-native";
 
 export default function TodoScreen() {
