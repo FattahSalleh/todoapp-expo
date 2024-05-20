@@ -1,5 +1,7 @@
 import React, { Requireable } from "react";
 import { View, Text, Image, StyleSheet, ImageSourcePropType } from "react-native";
+import { ThemedView } from "./ThemedView";
+import { ThemedText } from "./ThemedText";
 
 interface CustomHeaderProps {
 	title: string;
@@ -8,10 +10,10 @@ interface CustomHeaderProps {
 
 const CustomHeader: React.FC<CustomHeaderProps> = ({ title, iconSource }) => {
 	return (
-		<View style={styles.headerContainer}>
+		<ThemedView style={styles.headerContainer}>
 			<Image source={iconSource} style={styles.icon} />
-			<Text style={styles.title}>{title}</Text>
-		</View>
+			<ThemedText style={styles.title}>{title}</ThemedText>
+		</ThemedView>
 	);
 };
 
@@ -20,6 +22,7 @@ const styles = StyleSheet.create({
 		flexDirection: "row",
 		alignItems: "center",
 		padding: 16,
+		paddingTop: 48
 	},
 	icon: {
 		width: 24,
