@@ -1,5 +1,6 @@
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
+import { useColorScheme } from "@/hooks/useColorScheme.web";
 import { ScrollView } from "react-native";
 import { StyleSheet, Image, Platform } from "react-native";
 import { FlatList } from "react-native-gesture-handler";
@@ -29,16 +30,21 @@ const todoData = [
 
 type ItemProps = { title: string };
 
-const Item = ({ title }: ItemProps) => (
-	<ThemedView style={styles.item}>
-		<ThemedText style={styles.title}>{title}</ThemedText>
-	</ThemedView>
-);
+const Item = ({ title }: ItemProps) => {
+	const deviceTheme = useColorScheme();
+	const itemBackgroundColor = deviceTheme === "dark" ? "#FF0000" : "#00FBB0";
+	return (
+		<ThemedView
+			style={[styles.item, { backgroundColor: itemBackgroundColor }]}
+		>
+			<ThemedText style={styles.title}>{title}</ThemedText>
+		</ThemedView>
+	);
+};
 
 export default function TodoScreen() {
 	return (
 		<ThemedView>
-			{/* <ThemedText style={styles.textTest}>Todo page.</ThemedText> */}
 			<FlatList
 				data={todoData}
 				renderItem={({ item }) => <Item title={item.title} />}
@@ -50,10 +56,10 @@ export default function TodoScreen() {
 
 const styles = StyleSheet.create({
 	item: {
-		backgroundColor: "#f9c2ff",
 		padding: 20,
 		marginVertical: 8,
 		marginHorizontal: 16,
+		borderRadius: 8,
 	},
 	title: {
 		fontSize: 24,
