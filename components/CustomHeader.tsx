@@ -1,12 +1,5 @@
-import React, { Requireable, useEffect, useState } from "react";
-import {
-	View,
-	Text,
-	Image,
-	StyleSheet,
-	ImageSourcePropType,
-	useColorScheme,
-} from "react-native";
+import React, { useState } from "react";
+import { View, Image, StyleSheet, useColorScheme } from "react-native";
 import { ThemedView } from "./ThemedView";
 import { ThemedText } from "./ThemedText";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -22,19 +15,9 @@ const CustomHeader: React.FC<CustomHeaderProps> = ({ title, iconSource }) => {
 	const deviceTheme = useColorScheme();
 
 	const [currentTheme, setCurrentTheme] = useState(deviceTheme);
-	const [themeButtonBgColor, setThemeButtonBgColor] = useState(() => {
-		return deviceTheme === "dark" ? "gray" : "white";
-	});
-
-	useEffect(() => {
-		setThemeButtonBgColor(deviceTheme === "dark" ? "gray" : "white");
-	}, [deviceTheme]);
 
 	const toggleTheme = () => {
 		setCurrentTheme(currentTheme === "dark" ? "light" : "dark");
-		setThemeButtonBgColor(
-			themeButtonBgColor === "white" ? "gray" : "white"
-		);
 	};
 
 	const iconThemeSrc =
@@ -56,7 +39,10 @@ const CustomHeader: React.FC<CustomHeaderProps> = ({ title, iconSource }) => {
 					onPress={toggleTheme}
 					style={[
 						styles.themeButton,
-						{ backgroundColor: themeButtonBgColor },
+						{
+							backgroundColor:
+								currentTheme === "dark" ? "gray" : "white",
+						},
 					]}
 				>
 					<Image source={iconThemeSrc} style={styles.themeIcon} />
