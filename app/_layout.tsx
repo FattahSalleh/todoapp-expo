@@ -6,21 +6,29 @@ import {
 import { useFonts } from "expo-font";
 import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import "react-native-reanimated";
 
 import { useColorScheme } from "@/hooks/useColorScheme";
 import CustomHeader from "@/components/CustomHeader";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { createContext } from "vm";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
+
+// Context for app's Theme
+const ThemeContext = createContext({
+	theme: DefaultTheme,
+	toggleTheme: () => {},
+});
 
 export default function RootLayout() {
 	const colorScheme = useColorScheme();
 	const [loaded] = useFonts({
 		SpaceMono: require("../assets/fonts/SpaceMono-Regular.ttf"),
 	});
+	const [currentTheme, setCurrentTheme] = useState(colorScheme);
 
 	useEffect(() => {
 		if (loaded) {
@@ -32,27 +40,35 @@ export default function RootLayout() {
 		return null;
 	}
 
+	// Function to toggle the Theme
+	const toggleTheme = () => {
+		const newTheme = currentTheme === "dark" ? "light" : "dark";
+		setCurrentTheme(newTheme);
+	};
+
 	return (
 		<ThemeProvider
-			value={colorScheme === "dark" ? DarkTheme : DefaultTheme}
+			value={currentTheme === "dark" ? DarkTheme : DefaultTheme}
 		>
-			<GestureHandlerRootView>
-				<Stack>
-					<Stack.Screen
-						name="(tabs)"
-						options={{
-							header: () => (
-								<CustomHeader
-									title="Todo App"
-									iconSource={require("@/assets/images/react-logo.png")}
-								/>
-							),
-							headerShown: true,
-						}}
-					/>
-					<Stack.Screen name="+not-found" />
-				</Stack>
-			</GestureHandlerRootView>
+			<ThemeContext.Provider value={{ theme: currentTheme, toggleTheme }}>
+				<GestureHandlerRootView>
+					<Stack>
+						<Stack.Screen
+							name="(tabs)"
+							options={{
+								header: () => (
+									<CustomHeader
+										title="Todo App"
+										iconSource={require("@/assets/images/react-logo.png")}
+									/>
+								),
+								headerShown: true,
+							}}
+						/>
+						<Stack.Screen name="+not-found" />
+					</Stack>
+				</GestureHandlerRootView>
+			</ThemeContext.Provider>
 		</ThemeProvider>
 	);
 }
