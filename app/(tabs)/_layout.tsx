@@ -18,10 +18,10 @@ export default function TabLayout() {
 			<Tabs.Screen
 				name="index"
 				options={{
-					title: "Home",
+					title: "Todo",
 					tabBarIcon: ({ color, focused }) => (
 						<TabBarIcon
-							name={focused ? "home" : "home-outline"}
+							name={focused ? "list" : "list-outline"}
 							color={color}
 						/>
 					),
@@ -30,7 +30,7 @@ export default function TabLayout() {
 			<Tabs.Screen
 				name="explore"
 				options={{
-					title: "Note",
+					title: "Add",
 					tabBarIcon: ({ color, focused }) => (
 						<TabBarIcon
 							name={focused ? "add-circle" : "add-circle-outline"}
@@ -42,10 +42,10 @@ export default function TabLayout() {
 			<Tabs.Screen
 				name="todo"
 				options={{
-					title: "Todo",
+					title: "History",
 					tabBarIcon: ({ color, focused }) => (
 						<TabBarIcon
-							name={focused ? "list" : "list-outline"}
+							name={focused ? "time" : "time-outline"}
 							color={color}
 						/>
 					),
