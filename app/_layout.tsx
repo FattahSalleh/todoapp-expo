@@ -12,16 +12,10 @@ import "react-native-reanimated";
 import { useColorScheme } from "@/hooks/useColorScheme";
 import CustomHeader from "@/components/CustomHeader";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
-import { createContext } from "vm";
+import { Appearance } from "react-native";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
-
-// Context for app's Theme
-const ThemeContext = createContext({
-	theme: DefaultTheme,
-	toggleTheme: () => {},
-});
 
 export default function RootLayout() {
 	const colorScheme = useColorScheme();
@@ -44,31 +38,30 @@ export default function RootLayout() {
 	const toggleTheme = () => {
 		const newTheme = currentTheme === "dark" ? "light" : "dark";
 		setCurrentTheme(newTheme);
+		Appearance.setColorScheme(newTheme);
 	};
 
 	return (
 		<ThemeProvider
 			value={currentTheme === "dark" ? DarkTheme : DefaultTheme}
 		>
-			<ThemeContext.Provider value={{ theme: currentTheme, toggleTheme }}>
-				<GestureHandlerRootView>
-					<Stack>
-						<Stack.Screen
-							name="(tabs)"
-							options={{
-								header: () => (
-									<CustomHeader
-										title="Todo App"
-										iconSource={require("@/assets/images/react-logo.png")}
-									/>
-								),
-								headerShown: true,
-							}}
-						/>
-						<Stack.Screen name="+not-found" />
-					</Stack>
-				</GestureHandlerRootView>
-			</ThemeContext.Provider>
+			<GestureHandlerRootView>
+				<Stack>
+					<Stack.Screen
+						name="(tabs)"
+						options={{
+							header: () => (
+								<CustomHeader
+									title="Todo App"
+									iconSource={require("@/assets/images/react-logo.png")}
+								/>
+							),
+							headerShown: true,
+						}}
+					/>
+					<Stack.Screen name="+not-found" />
+				</Stack>
+			</GestureHandlerRootView>
 		</ThemeProvider>
 	);
 }
