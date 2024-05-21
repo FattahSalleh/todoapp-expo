@@ -1,7 +1,8 @@
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
+import { useTheme } from "@/context/ThemeContext";
 import { useColorScheme } from "@/hooks/useColorScheme.web";
-import { ScrollView } from "react-native";
+import { useContext } from "react";
 import { StyleSheet, Image, Platform } from "react-native";
 import { FlatList } from "react-native-gesture-handler";
 
@@ -31,8 +32,9 @@ const todoData = [
 type ItemProps = { title: string };
 
 const Item = ({ title }: ItemProps) => {
-	const deviceTheme = useColorScheme();
-	const itemBackgroundColor = deviceTheme === "dark" ? "#FF0000" : "#00FBB0";
+	const { theme } = useTheme();
+
+	const itemBackgroundColor = theme === "dark" ? "#027148" : "#00FBB0";
 	return (
 		<ThemedView
 			style={[styles.item, { backgroundColor: itemBackgroundColor }]}
