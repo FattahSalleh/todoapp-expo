@@ -1,28 +1,20 @@
-import {
-	DarkTheme,
-	DefaultTheme,
-	ThemeProvider,
-} from "@react-navigation/native";
 import { useFonts } from "expo-font";
 import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { useEffect, useState } from "react";
 import "react-native-reanimated";
 
-import { useColorScheme } from "@/hooks/useColorScheme";
 import CustomHeader from "@/components/CustomHeader";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
-import { Appearance } from "react-native";
+import { ThemeProvider, useTheme } from "@/context/ThemeContext";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
-	const colorScheme = useColorScheme();
 	const [loaded] = useFonts({
 		SpaceMono: require("../assets/fonts/SpaceMono-Regular.ttf"),
 	});
-	const [currentTheme, setCurrentTheme] = useState(colorScheme);
 
 	useEffect(() => {
 		if (loaded) {
@@ -34,17 +26,8 @@ export default function RootLayout() {
 		return null;
 	}
 
-	// Function to toggle the Theme
-	const toggleTheme = () => {
-		const newTheme = currentTheme === "dark" ? "light" : "dark";
-		setCurrentTheme(newTheme);
-		Appearance.setColorScheme(newTheme);
-	};
-
 	return (
-		<ThemeProvider
-			value={currentTheme === "dark" ? DarkTheme : DefaultTheme}
-		>
+		<ThemeProvider>
 			<GestureHandlerRootView>
 				<Stack>
 					<Stack.Screen

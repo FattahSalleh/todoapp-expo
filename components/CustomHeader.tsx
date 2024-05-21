@@ -1,16 +1,11 @@
-import React, { useState } from "react";
-import {
-	View,
-	Image,
-	StyleSheet,
-	useColorScheme,
-	Appearance,
-} from "react-native";
+import React from "react";
+import { View, Image, StyleSheet } from "react-native";
 import { ThemedView } from "./ThemedView";
 import { ThemedText } from "./ThemedText";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Colors } from "@/constants/Colors";
 import { TouchableOpacity } from "react-native-gesture-handler";
+import { useTheme } from "@/context/ThemeContext";
 
 interface CustomHeaderProps {
 	title: string;
@@ -18,18 +13,11 @@ interface CustomHeaderProps {
 }
 
 const CustomHeader: React.FC<CustomHeaderProps> = ({ title, iconSource }) => {
-	const deviceTheme = useColorScheme();
-
-	const [currentTheme, setCurrentTheme] = useState(deviceTheme);
-
-	const toggleTheme = () => {
-		const newTheme = currentTheme === "dark" ? "light" : "dark";
-		setCurrentTheme(newTheme);
-		Appearance.setColorScheme(newTheme);
-	};
+	const { theme } = useTheme();
+	const { toggleTheme } = useTheme();
 
 	const iconThemeSrc =
-		currentTheme === "dark"
+		theme === "dark"
 			? require("@/assets/images/light_mode.png")
 			: require("@/assets/images/dark_mode.png");
 
@@ -49,7 +37,7 @@ const CustomHeader: React.FC<CustomHeaderProps> = ({ title, iconSource }) => {
 						styles.themeButton,
 						{
 							backgroundColor:
-								currentTheme === "dark" ? "gray" : "white",
+								theme === "dark" ? "gray" : "white",
 						},
 					]}
 				>
