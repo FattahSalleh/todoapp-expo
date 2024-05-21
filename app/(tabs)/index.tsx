@@ -1,9 +1,7 @@
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import { useTheme } from "@/context/ThemeContext";
-import { useColorScheme } from "@/hooks/useColorScheme.web";
-import { useContext } from "react";
-import { StyleSheet, Image, Platform } from "react-native";
+import { StyleSheet } from "react-native";
 import { FlatList } from "react-native-gesture-handler";
 
 const todoData = [
