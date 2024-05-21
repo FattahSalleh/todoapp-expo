@@ -2,10 +2,10 @@ import { ThemedText } from "@/components/ThemedText";
 import { ScrollView } from "react-native";
 import { StyleSheet, Image, Platform } from "react-native";
 
-export default function TodoScreen() {
+export default function HistoryScreen() {
 	return (
 		<ScrollView>
-			<ThemedText style={styles.textTest}>Todo test page.</ThemedText>
+			<ThemedText style={styles.textTest}>History page.</ThemedText>
 		</ScrollView>
 	);
 }

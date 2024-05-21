@@ -28,7 +28,7 @@ export default function TabLayout() {
 				}}
 			/>
 			<Tabs.Screen
-				name="explore"
+				name="add"
 				options={{
 					title: "Add",
 					tabBarIcon: ({ color, focused }) => (
@@ -40,7 +40,7 @@ export default function TabLayout() {
 				}}
 			/>
 			<Tabs.Screen
-				name="todo"
+				name="history"
 				options={{
 					title: "History",
 					tabBarIcon: ({ color, focused }) => (
