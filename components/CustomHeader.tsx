@@ -1,5 +1,11 @@
 import React, { useState } from "react";
-import { View, Image, StyleSheet, useColorScheme } from "react-native";
+import {
+	View,
+	Image,
+	StyleSheet,
+	useColorScheme,
+	Appearance,
+} from "react-native";
 import { ThemedView } from "./ThemedView";
 import { ThemedText } from "./ThemedText";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -17,7 +23,9 @@ const CustomHeader: React.FC<CustomHeaderProps> = ({ title, iconSource }) => {
 	const [currentTheme, setCurrentTheme] = useState(deviceTheme);
 
 	const toggleTheme = () => {
-		setCurrentTheme(currentTheme === "dark" ? "light" : "dark");
+		const newTheme = currentTheme === "dark" ? "light" : "dark";
+		setCurrentTheme(newTheme);
+		Appearance.setColorScheme(newTheme);
 	};
 
 	const iconThemeSrc =
@@ -77,6 +85,8 @@ const styles = StyleSheet.create({
 		borderRadius: 20,
 		justifyContent: "center",
 		alignItems: "center",
+		borderWidth: 1,
+		borderColor: "black",
 	},
 	themeIcon: {
 		width: 20,
