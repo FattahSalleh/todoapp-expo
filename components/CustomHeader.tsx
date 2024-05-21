@@ -24,7 +24,12 @@ const CustomHeader: React.FC<CustomHeaderProps> = ({ title, iconSource }) => {
 	return (
 		<SafeAreaView
 			edges={["top"]}
-			style={{ backgroundColor: Colors.dark.background }}
+			style={{
+				backgroundColor:
+					theme === "dark"
+						? Colors.dark.background
+						: Colors.light.background,
+			}}
 		>
 			<ThemedView style={styles.headerContainer}>
 				<View style={styles.headerLeftSide}>
