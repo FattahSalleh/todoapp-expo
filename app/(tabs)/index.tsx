@@ -5,39 +5,57 @@ import { StyleSheet, Image, Platform } from "react-native";
 import { FlatList } from "react-native-gesture-handler";
 
 const todoData = [
-	{
-		id: "bd7acbea-c1b1-46c2-aed5-3ad53abb28ba",
-		title: "First Item",
-	},
-	{
-		id: "3ac68afc-c605-48d3-a4f8-fbd91aa97f63",
-		title: "Second Item",
-	},
-	{
-		id: "58694a0f-3da1-471f-bd96-145571e29d72",
-		title: "Third Item",
-	},
+	{ id: "1", title: "Task 1" },
+	{ id: "2", title: "Task 2" },
+	{ id: "3", title: "Task 3" },
+	{ id: "4", title: "Task 4" },
+	{ id: "5", title: "Task 5" },
+	{ id: "6", title: "Task 6" },
+	{ id: "7", title: "Task 7" },
+	{ id: "8", title: "Task 8" },
+	{ id: "9", title: "Task 9" },
+	{ id: "10", title: "Task 10" },
+	{ id: "11", title: "Task 11" },
+	{ id: "12", title: "Task 12" },
+	{ id: "13", title: "Task 13" },
+	{ id: "14", title: "Task 14" },
+	{ id: "15", title: "Task 15" },
+	{ id: "16", title: "Task 16" },
+	{ id: "17", title: "Task 17" },
+	{ id: "18", title: "Task 18" },
+	{ id: "19", title: "Task 19" },
+	{ id: "20", title: "Task 20" },
 ];
 
 type ItemProps = { title: string };
 
 const Item = ({ title }: ItemProps) => (
-	<ThemedView>
-		<ThemedText>{title}</ThemedText>
+	<ThemedView style={styles.item}>
+		<ThemedText style={styles.title}>{title}</ThemedText>
 	</ThemedView>
 );
 
 export default function TodoScreen() {
 	return (
-		<ScrollView>
-			<ThemedText style={styles.textTest}>Todo page.</ThemedText>
-			{/* <FlatList data={[{}]} renderItem={undefined} /> */}
-		</ScrollView>
+		<ThemedView>
+			{/* <ThemedText style={styles.textTest}>Todo page.</ThemedText> */}
+			<FlatList
+				data={todoData}
+				renderItem={({ item }) => <Item title={item.title} />}
+				keyExtractor={(item) => item.id}
+			/>
+		</ThemedView>
 	);
 }
 
 const styles = StyleSheet.create({
-	textTest: {
-		color: "#a3a3a3",
+	item: {
+		backgroundColor: "#f9c2ff",
+		padding: 20,
+		marginVertical: 8,
+		marginHorizontal: 16,
+	},
+	title: {
+		fontSize: 24,
 	},
 });
