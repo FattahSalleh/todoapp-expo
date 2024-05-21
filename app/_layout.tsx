@@ -11,6 +11,7 @@ import "react-native-reanimated";
 
 import { useColorScheme } from "@/hooks/useColorScheme";
 import CustomHeader from "@/components/CustomHeader";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -35,21 +36,23 @@ export default function RootLayout() {
 		<ThemeProvider
 			value={colorScheme === "dark" ? DarkTheme : DefaultTheme}
 		>
-			<Stack>
-				<Stack.Screen
-					name="(tabs)"
-					options={{
-						header: () => (
-							<CustomHeader
-								title="Todo App"
-								iconSource={require('@/assets/images/react-logo.png')}
-							/>
-						),
-						headerShown: true,
-					}}
-				/>
-				<Stack.Screen name="+not-found" />
-			</Stack>
+			<GestureHandlerRootView>
+				<Stack>
+					<Stack.Screen
+						name="(tabs)"
+						options={{
+							header: () => (
+								<CustomHeader
+									title="Todo App"
+									iconSource={require("@/assets/images/react-logo.png")}
+								/>
+							),
+							headerShown: true,
+						}}
+					/>
+					<Stack.Screen name="+not-found" />
+				</Stack>
+			</GestureHandlerRootView>
 		</ThemeProvider>
 	);
 }
