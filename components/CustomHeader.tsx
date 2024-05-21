@@ -1,4 +1,4 @@
-import React, { Requireable, useState } from "react";
+import React, { Requireable, useEffect, useState } from "react";
 import {
 	View,
 	Text,
@@ -22,9 +22,19 @@ const CustomHeader: React.FC<CustomHeaderProps> = ({ title, iconSource }) => {
 	const deviceTheme = useColorScheme();
 
 	const [currentTheme, setCurrentTheme] = useState(deviceTheme);
+	const [themeButtonBgColor, setThemeButtonBgColor] = useState(() => {
+		return deviceTheme === "dark" ? "gray" : "white";
+	});
+
+	useEffect(() => {
+		setThemeButtonBgColor(deviceTheme === "dark" ? "gray" : "white");
+	}, [deviceTheme]);
 
 	const toggleTheme = () => {
 		setCurrentTheme(currentTheme === "dark" ? "light" : "dark");
+		setThemeButtonBgColor(
+			themeButtonBgColor === "white" ? "gray" : "white"
+		);
 	};
 
 	const iconThemeSrc =
@@ -44,7 +54,10 @@ const CustomHeader: React.FC<CustomHeaderProps> = ({ title, iconSource }) => {
 				</View>
 				<TouchableOpacity
 					onPress={toggleTheme}
-					style={styles.themeButton}
+					style={[
+						styles.themeButton,
+						{ backgroundColor: themeButtonBgColor },
+					]}
 				>
 					<Image source={iconThemeSrc} style={styles.themeIcon} />
 				</TouchableOpacity>
@@ -58,10 +71,10 @@ const styles = StyleSheet.create({
 		flexDirection: "row",
 		alignItems: "center",
 		padding: 16,
-		justifyContent: "space-between"
+		justifyContent: "space-between",
 	},
 	headerLeftSide: {
-		flexDirection: "row"
+		flexDirection: "row",
 	},
 	icon: {
 		width: 24,
@@ -73,6 +86,11 @@ const styles = StyleSheet.create({
 		fontWeight: "bold",
 	},
 	themeButton: {
+		width: 30,
+		height: 30,
+		borderRadius: 20,
+		justifyContent: "center",
+		alignItems: "center",
 	},
 	themeIcon: {
 		width: 20,
