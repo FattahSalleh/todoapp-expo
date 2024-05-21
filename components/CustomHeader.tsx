@@ -11,6 +11,7 @@ import { ThemedView } from "./ThemedView";
 import { ThemedText } from "./ThemedText";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Colors } from "@/constants/Colors";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
 interface CustomHeaderProps {
 	title: string;
@@ -28,14 +29,25 @@ const CustomHeader: React.FC<CustomHeaderProps> = ({ title, iconSource }) => {
 
 	const iconThemeSrc =
 		currentTheme === "dark"
-			? require("@/assets/images/light_mode.svg")
-			: require("@/assets/images/dark_mode.svg");
+			? require("@/assets/images/light_mode.png")
+			: require("@/assets/images/dark_mode.png");
 
 	return (
-		<SafeAreaView edges={["top"]} style={{ backgroundColor: Colors.dark.background }}>
+		<SafeAreaView
+			edges={["top"]}
+			style={{ backgroundColor: Colors.dark.background }}
+		>
 			<ThemedView style={styles.headerContainer}>
-				<Image source={iconSource} style={styles.icon} />
-				<ThemedText style={styles.title}>{title}</ThemedText>
+				<View style={styles.headerLeftSide}>
+					<Image source={iconSource} style={styles.icon} />
+					<ThemedText style={styles.title}>{title}</ThemedText>
+				</View>
+				<TouchableOpacity
+					onPress={toggleTheme}
+					style={styles.themeButton}
+				>
+					<Image source={iconThemeSrc} style={styles.themeIcon} />
+				</TouchableOpacity>
 			</ThemedView>
 		</SafeAreaView>
 	);
@@ -46,7 +58,10 @@ const styles = StyleSheet.create({
 		flexDirection: "row",
 		alignItems: "center",
 		padding: 16,
-		// paddingTop: 48
+		justifyContent: "space-between"
+	},
+	headerLeftSide: {
+		flexDirection: "row"
 	},
 	icon: {
 		width: 24,
@@ -56,6 +71,12 @@ const styles = StyleSheet.create({
 	title: {
 		fontSize: 18,
 		fontWeight: "bold",
+	},
+	themeButton: {
+	},
+	themeIcon: {
+		width: 20,
+		height: 20,
 	},
 });
 
