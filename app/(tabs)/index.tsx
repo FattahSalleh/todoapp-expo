@@ -104,6 +104,22 @@ const todoData: TodoData[] = [
 	},
 ];
 
+// Change Item to Collapsibles for Description. Sample usage:
+{/* <Collapsible title="File-based routing">
+	<ThemedText>
+		This app has two screens:{" "}
+		<ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> and{" "}
+		<ThemedText type="defaultSemiBold">app/(tabs)/explore.tsx</ThemedText>
+	</ThemedText>
+	<ThemedText>
+		The layout file in{" "}
+		<ThemedText type="defaultSemiBold">app/(tabs)/_layout.tsx</ThemedText>{" "}
+		sets up the tab navigator.
+	</ThemedText>
+	<ExternalLink href="https://docs.expo.dev/router/introduction">
+		<ThemedText type="link">Learn more</ThemedText>
+	</ExternalLink>
+</Collapsible>; */}
 
 type TodoProps = { todoData: TodoData };
 
@@ -116,7 +132,7 @@ const Item = ({ todoData }: TodoProps) => {
 			style={[styles.item, { backgroundColor: itemBackgroundColor }]}
 		>
 			<ThemedText style={styles.title}>{todoData.title}</ThemedText>
-			<ThemedText style={styles.description}>
+			<ThemedText type="default">
 				{todoData.description}
 			</ThemedText>
 			<ThemedText style={styles.date}>
@@ -152,11 +168,9 @@ const styles = StyleSheet.create({
 		fontSize: 24,
 		fontWeight: "bold",
 	},
-	description: {
-		fontSize: 16,
-	},
 	date: {
 		fontSize: 12,
 		textAlign: "right",
+		color: "#0a7ea4"
 	},
 });
