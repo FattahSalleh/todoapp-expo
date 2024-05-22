@@ -143,7 +143,7 @@ const styles = StyleSheet.create({
 		flex: 1,
 	},
 	item: {
-		padding: 20,
+		padding: 16,
 		marginVertical: 8,
 		marginHorizontal: 16,
 		borderRadius: 8,
