@@ -13,10 +13,6 @@ export const ThemedTextInput: React.FC<ThemedTextInputProps> = ({
 	darkColor,
 	...rest
 }) => {
-	const textColor = useThemeColor(
-		{ light: lightColor, dark: darkColor },
-		"text"
-	);
 	const bgColor = useThemeColor(
 		{ light: "#fff", dark: "#f5f5f5" },
 		"background"
@@ -31,7 +27,6 @@ export const ThemedTextInput: React.FC<ThemedTextInputProps> = ({
 			style={[
 				styles.input,
 				{
-					color: textColor,
 					backgroundColor: bgColor,
 					shadowColor: shadowColor,
 				},
@@ -48,6 +43,7 @@ export const ThemedTextInput: React.FC<ThemedTextInputProps> = ({
 
 const styles = StyleSheet.create({
 	input: {
+		color: "#11181C",
 		fontSize: 16,
 		borderWidth: 1,
 		borderColor: "#ccc",
