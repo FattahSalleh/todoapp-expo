@@ -105,7 +105,8 @@ const todoData: TodoData[] = [
 ];
 
 // Change Item to Collapsibles for Description. Sample usage:
-{/* <Collapsible title="File-based routing">
+{
+	/* <Collapsible title="File-based routing">
 	<ThemedText>
 		This app has two screens:{" "}
 		<ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> and{" "}
@@ -119,7 +120,8 @@ const todoData: TodoData[] = [
 	<ExternalLink href="https://docs.expo.dev/router/introduction">
 		<ThemedText type="link">Learn more</ThemedText>
 	</ExternalLink>
-</Collapsible>; */}
+</Collapsible>; */
+}
 
 type TodoProps = { todoData: TodoData };
 
@@ -127,15 +129,14 @@ const Item = ({ todoData }: TodoProps) => {
 	const { theme } = useTheme();
 
 	const itemBackgroundColor = theme === "dark" ? "#027148" : "#00FBB0";
+	const itemTextColor = theme === "dark" ? "#84bed1" : "#3a97b6";
 	return (
 		<ThemedView
 			style={[styles.item, { backgroundColor: itemBackgroundColor }]}
 		>
 			<ThemedText style={styles.title}>{todoData.title}</ThemedText>
-			<ThemedText type="default">
-				{todoData.description}
-			</ThemedText>
-			<ThemedText style={styles.date}>
+			<ThemedText type="default">{todoData.description}</ThemedText>
+			<ThemedText style={[styles.date, { color: itemTextColor }]}>
 				Created on {todoData.date_created.toLocaleDateString()}
 			</ThemedText>
 		</ThemedView>
@@ -171,6 +172,5 @@ const styles = StyleSheet.create({
 	date: {
 		fontSize: 12,
 		textAlign: "right",
-		color: "#0a7ea4"
 	},
 });
