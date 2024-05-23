@@ -50,7 +50,7 @@ export function ThemedButton({
 const styles = StyleSheet.create({
 	button: {
 		padding: 15,
-		borderWidth: 1,
+		borderWidth: 2,
 		borderRadius: 10,
 		shadowOffset: { width: -1, height: 1 },
 		shadowOpacity: 0.3,
