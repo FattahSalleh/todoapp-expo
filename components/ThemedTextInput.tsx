@@ -48,7 +48,6 @@ const styles = StyleSheet.create({
 		borderWidth: 1,
 		borderColor: "#ccc",
 		borderRadius: 8,
-		margin: 12,
 		padding: 10,
 
 		shadowOffset: { width: -1, height: 1 },
