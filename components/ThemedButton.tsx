@@ -1,7 +1,11 @@
-import { type TextProps, StyleSheet, View, Button } from "react-native";
+import {
+	type TextProps,
+	StyleSheet,
+	Text,
+	TouchableOpacity,
+} from "react-native";
 
 import { useThemeColor } from "@/hooks/useThemeColor";
-import { text } from "stream/consumers";
 
 export type ThemedButtonProps = TextProps & {
 	lightColor?: string;
@@ -13,8 +17,6 @@ export type ThemedButtonProps = TextProps & {
 
 export function ThemedButton({
 	style,
-	lightColor,
-	darkColor,
 	type = "primary",
 	title,
 	onPress,
@@ -27,7 +29,7 @@ export function ThemedButton({
 	);
 
 	return (
-		<View
+		<TouchableOpacity
 			style={[
 				styles.button,
 				type === "primary" ? styles.primary : undefined,
@@ -37,20 +39,17 @@ export function ThemedButton({
 				style,
 				{ shadowColor: shadowColor },
 			]}
+			onPress={onPress}
+			activeOpacity={0.8}
 		>
-			<Button
-				title={title}
-				disabled={type === "disabled"}
-				onPress={onPress}
-				color={textColor}
-			/>
-		</View>
+			<Text style={styles.text}>{title}</Text>
+		</TouchableOpacity>
 	);
 }
 
 const styles = StyleSheet.create({
 	button: {
-		padding: 10,
+		padding: 15,
 		borderWidth: 1,
 		borderRadius: 10,
 		shadowOffset: { width: -1, height: 1 },
@@ -59,6 +58,10 @@ const styles = StyleSheet.create({
 		elevation: 5,
 
 		margin: 5,
+	},
+	text: {
+		fontSize: 16,
+		textAlign: "center",
 	},
 	primary: {
 		backgroundColor: "#74cf13",
