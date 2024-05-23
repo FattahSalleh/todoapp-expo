@@ -1,4 +1,4 @@
-import { Keyboard, StyleSheet } from "react-native";
+import { Alert, Button, Keyboard, StyleSheet, View } from "react-native";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import {
@@ -7,6 +7,7 @@ import {
 } from "react-native-gesture-handler";
 import { useState } from "react";
 import { ThemedTextInput } from "@/components/ThemedTextInput";
+import { ThemedButton } from "@/components/ThemedButton";
 
 // TODO: Create themed input input
 // TODO: Create themed primary & secondary button
@@ -34,6 +35,20 @@ export default function AddScreen() {
 					value={textDesc}
 					placeholder="Enter Description here..."
 				/>
+				<View style={styles.buttonContainer}>
+					<ThemedButton
+						style={styles.button}
+						type="tertiary"
+						onPress={() => Alert.alert("Pressed")}
+						title={"Clear"}
+					/>
+					<ThemedButton
+						style={styles.button}
+						type="primary"
+						onPress={() => Alert.alert("Pressed")}
+						title={"Submit"}
+					/>
+				</View>
 			</ScrollView>
 		</ThemedView>
 	);
@@ -49,5 +64,12 @@ const styles = StyleSheet.create({
 	},
 	inputDescription: {
 		height: 120,
+	},
+	buttonContainer: {
+		flexDirection: "row",
+		justifyContent: "space-evenly",
+	},
+	button: {
+    flex: 1,
 	},
 });
