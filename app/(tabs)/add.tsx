@@ -1,7 +1,10 @@
-import { StyleSheet } from "react-native";
+import { Keyboard, StyleSheet } from "react-native";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
-import { TextInput } from "react-native-gesture-handler";
+import {
+	ScrollView,
+	TouchableWithoutFeedback,
+} from "react-native-gesture-handler";
 import { useState } from "react";
 import { ThemedTextInput } from "@/components/ThemedTextInput";
 
@@ -14,20 +17,24 @@ export default function AddScreen() {
 
 	return (
 		<ThemedView style={styles.container}>
-			<ThemedText>Add Note:</ThemedText>
-			<ThemedTextInput
-				style={styles.inputTitle}
-				onChangeText={onChangeTextTitle}
-				value={textTitle}
-				placeholder="Enter Title here..."
-			/>
-			<ThemedTextInput
-				style={styles.inputDescription}
-				onChangeText={onChangeTextDesc}
-				multiline={true}
-				value={textDesc}
-				placeholder="Enter Description here..."
-			/>
+			<ScrollView keyboardShouldPersistTaps={"handled"}>
+				<ThemedText>Add Note:</ThemedText>
+				<ThemedTextInput
+					blurOnSubmit={true}
+					style={styles.inputTitle}
+					onChangeText={onChangeTextTitle}
+					value={textTitle}
+					placeholder="Enter Title here..."
+				/>
+				<ThemedTextInput
+					blurOnSubmit={true}
+					style={styles.inputDescription}
+					onChangeText={onChangeTextDesc}
+					multiline={true}
+					value={textDesc}
+					placeholder="Enter Description here..."
+				/>
+			</ScrollView>
 		</ThemedView>
 	);
 }
