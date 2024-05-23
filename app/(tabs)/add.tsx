@@ -9,9 +9,6 @@ import { useState } from "react";
 import { ThemedTextInput } from "@/components/ThemedTextInput";
 import { ThemedButton } from "@/components/ThemedButton";
 
-// TODO: Create themed input input
-// TODO: Create themed primary & secondary button
-
 export default function AddScreen() {
 	const [textTitle, onChangeTextTitle] = useState("");
 	const [textDesc, onChangeTextDesc] = useState("");
