@@ -61,15 +61,17 @@ const styles = StyleSheet.create({
 	},
 	inputTitle: {
 		height: 40,
+		marginTop: 12,
 	},
 	inputDescription: {
 		height: 120,
+		marginVertical: 12,
 	},
 	buttonContainer: {
 		flexDirection: "row",
 		justifyContent: "space-evenly",
 	},
 	button: {
-    flex: 1,
+		flex: 1,
 	},
 });
