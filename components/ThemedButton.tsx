@@ -50,18 +50,18 @@ export function ThemedButton({
 const styles = StyleSheet.create({
 	button: {
 		padding: 15,
-		borderWidth: 2,
+		borderWidth: 1,
 		borderRadius: 10,
 		shadowOffset: { width: -1, height: 1 },
 		shadowOpacity: 0.3,
 		shadowRadius: 2,
 		elevation: 5,
-
 		margin: 5,
 	},
 	text: {
 		fontSize: 16,
 		textAlign: "center",
+		fontWeight: "600",
 	},
 	primary: {
 		backgroundColor: "#74cf13",
