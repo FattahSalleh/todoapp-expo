@@ -1,17 +1,42 @@
 import { Alert, Button, Keyboard, StyleSheet, View } from "react-native";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
-import {
-	ScrollView,
-	TouchableWithoutFeedback,
-} from "react-native-gesture-handler";
+import { ScrollView } from "react-native-gesture-handler";
 import { useState } from "react";
 import { ThemedTextInput } from "@/components/ThemedTextInput";
 import { ThemedButton } from "@/components/ThemedButton";
+import todoData from "@/db/todo-data.json";
 
 export default function AddScreen() {
 	const [textTitle, onChangeTextTitle] = useState("");
 	const [textDesc, onChangeTextDesc] = useState("");
+
+	// const handleClear = () => {
+
+	// }
+
+	const handleSubmit = () => {
+		if (!textTitle.trim() || !textDesc.trim()) {
+			Alert.alert("Error", "Please enter both title and description.");
+			return;
+		}
+
+		const newTodo = {
+			id: (todoData.length + 1).toString(),
+			title: textTitle,
+			description: textDesc,
+			date_created: new Date().toISOString(),
+		};
+
+		// Update the todoData array with new Todo item
+		todoData.push(newTodo);
+
+		// Reset input fields
+		onChangeTextTitle("");
+		onChangeTextDesc("");
+
+		Alert.alert("Success", "Todo item added successfully.");
+	};
 
 	return (
 		<ThemedView style={styles.container}>
@@ -42,7 +67,7 @@ export default function AddScreen() {
 					<ThemedButton
 						style={styles.button}
 						type="primary"
-						onPress={() => Alert.alert("Pressed")}
+						onPress={handleSubmit}
 						title={"Submit"}
 					/>
 				</View>
