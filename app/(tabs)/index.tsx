@@ -1,11 +1,13 @@
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import { useTheme } from "@/context/ThemeContext";
-import { StyleSheet } from "react-native";
+import { Alert, StyleSheet, TouchableOpacity } from "react-native";
 import { FlatList, RefreshControl } from "react-native-gesture-handler";
 import todoData from "@/db/todo-data.json";
 import { useCallback, useState } from "react";
 import { useFocusEffect } from "expo-router";
+import { Ionicons } from "@expo/vector-icons";
+import * as FileSystem from "expo-file-system";
 
 type TodoData = {
 	id: string;
@@ -33,13 +35,35 @@ type TodoData = {
 </Collapsible>; */
 }
 
-type TodoProps = { todoData: TodoData };
+type TodoProps = {
+	todoData: TodoData;
+	onDelete: (id: string) => void;
+};
 
-const Item = ({ todoData }: TodoProps) => {
+const Item = ({ todoData, onDelete }: TodoProps) => {
 	const { theme } = useTheme();
 
 	const itemBackgroundColor = theme === "dark" ? "#027148" : "#00FBB0";
 	const itemTextColor = theme === "dark" ? "#84bed1" : "#3a97b6";
+
+	const handleDelete = () => {
+		Alert.alert(
+			"Confirm Deletion",
+			"Are you sure you want to delete this item?",
+			[
+				{
+					text: "Cancel",
+					style: "cancel",
+				},
+				{
+					text: "Confirm",
+					onPress: () => onDelete(todoData.id),
+				},
+			],
+			{ cancelable: true }
+		);
+	};
+
 	return (
 		<ThemedView
 			style={[styles.item, { backgroundColor: itemBackgroundColor }]}
@@ -49,6 +73,14 @@ const Item = ({ todoData }: TodoProps) => {
 			<ThemedText style={[styles.date, { color: itemTextColor }]}>
 				Created on {todoData.date_created.toLocaleDateString()}
 			</ThemedText>
+			<TouchableOpacity onPress={handleDelete}>
+				<Ionicons
+					name="trash-outline"
+					size={24}
+					color={"red"}
+					style={styles.deleteIcon}
+				/>
+			</TouchableOpacity>
 		</ThemedView>
 	);
 };
@@ -85,11 +117,52 @@ export default function TodoScreen() {
 
 	useFocusEffect(refreshTodoScreen);
 
+	const deleteTodoDataFromJsonFile = async (id: string) => {
+		try {
+			// Read existing data from the JSON file
+			let filePath = FileSystem.documentDirectory + "/todo-data.json";
+			const jsonData = await FileSystem.readAsStringAsync(filePath);
+			let todos = JSON.parse(jsonData);
+
+			// Find the index of the todo item with the specified ID
+			const index = todos.findIndex(
+				(todo: { id: string }) => todo.id === id
+			);
+
+			if (index !== -1) {
+				// Remove the todo item from the data array
+				todos.splice(index, 1);
+
+				// Save the updated data back to the JSON file
+				const updatedJsonDAta = JSON.stringify(todos);
+				await FileSystem.writeAsStringAsync(filePath, updatedJsonDAta, {
+					encoding: FileSystem.EncodingType.UTF8,
+				});
+
+				Alert.alert("Deleted", "Successfully deleted the item.");
+			} else {
+				console.log("Todo item not found.");
+			}
+		} catch (error) {
+			console.error("Error deleting todo item: ", error);
+			Alert.alert("Error!", "Error deleting the item.");
+		}
+	};
+
+	const onDeleteItem = async (id: string) => {
+		const updatedTodos = todosItem.filter((todo) => todo.id !== id);
+		setTodosItem(updatedTodos);
+
+		await deleteTodoDataFromJsonFile(id);
+	};
+
 	return (
 		<ThemedView style={styles.container}>
 			<FlatList
 				data={todosItem}
-				renderItem={({ item }) => <Item todoData={item} />}
+				renderItem={({ item }) => (
+					<Item todoData={item} onDelete={onDeleteItem} />
+				)}
 				keyExtractor={(item) => item.id}
 				refreshControl={
 					<RefreshControl
@@ -112,6 +185,7 @@ const styles = StyleSheet.create({
 		marginVertical: 8,
 		marginHorizontal: 16,
 		borderRadius: 8,
+		position: "relative",
 	},
 	title: {
 		fontSize: 24,
@@ -120,5 +194,10 @@ const styles = StyleSheet.create({
 	date: {
 		fontSize: 12,
 		textAlign: "right",
+	},
+	deleteIcon: {
+		position: "absolute",
+		top: 8,
+		right: 8,
 	},
 });
