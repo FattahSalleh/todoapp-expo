@@ -29,6 +29,7 @@ export default function AddScreen() {
 			title: string;
 			description: string;
 			date_created: string;
+			completion_status: boolean;
 		}[]
 	) => {
 		const jsonData = JSON.stringify(data);
@@ -65,6 +66,7 @@ export default function AddScreen() {
 			title: textTitle,
 			description: textDesc,
 			date_created: new Date().toISOString(),
+			completion_status: false,
 		};
 
 		// Update the todoData array with new Todo item

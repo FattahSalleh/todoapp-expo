@@ -14,6 +14,7 @@ type TodoData = {
 	title: string;
 	description: string;
 	date_created: Date;
+	completion_status: boolean;
 };
 
 // Change Item to Collapsibles for Description. Sample usage:
