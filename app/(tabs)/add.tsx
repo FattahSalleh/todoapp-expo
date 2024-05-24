@@ -36,6 +36,8 @@ export default function AddScreen() {
 		onChangeTextTitle("");
 		onChangeTextDesc("");
 
+		Keyboard.dismiss();
+
 		Alert.alert("Success", "Todo item added successfully.");
 	};
 
