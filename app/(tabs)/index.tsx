@@ -89,26 +89,31 @@ const Item = ({ todoData, onDelete }: TodoProps) => {
 
 export default function TodoScreen() {
 	const [refreshing, setRefreshing] = useState(false);
-
-	// Convert string to Date format and sort by date_created in descending order
-	const convertAndSortTodoData = () => {
-		const convertedTodos = todoData.map((todo) => ({
-			...todo,
-			date_created: new Date(todo.date_created),
-		}));
-		return convertedTodos.sort(
-			(a, b) => b.date_created.getTime() - a.date_created.getTime()
-		);
-	};
-
-	const [todosItem, setTodosItem] = useState([]);
+	const [todosItem, setTodosItem] = useState<TodoData[]>([]);
 
 	const loadTodoData = async () => {
 		try {
 			let filePath = FileSystem.documentDirectory + "/todo-data.json";
 			const jsonData = await FileSystem.readAsStringAsync(filePath);
 			const parsedData = JSON.parse(jsonData);
-			setTodosItem(parsedData);
+
+			// Convert string to Date format
+			const convertedTodos = parsedData.map(
+				(todo: { date_created: string | number | Date }) => ({
+					...todo,
+					date_created: new Date(todo.date_created),
+				})
+			);
+
+			// Sort by date_created in descending order
+			const sortedTodos = convertedTodos.sort(
+				(
+					a: { date_created: { getTime: () => number } },
+					b: { date_created: { getTime: () => number } }
+				) => b.date_created.getTime() - a.date_created.getTime()
+			);
+
+			setTodosItem(sortedTodos);
 		} catch (error) {
 			console.error("Error loading todo data: ", error);
 		}
