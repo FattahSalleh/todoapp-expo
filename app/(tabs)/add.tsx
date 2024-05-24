@@ -1,4 +1,4 @@
-import { Alert, Keyboard, StyleSheet, View } from "react-native";
+import { Keyboard, StyleSheet, View } from "react-native";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import { ScrollView } from "react-native-gesture-handler";
@@ -12,6 +12,11 @@ export default function AddScreen() {
 	const [textTitle, onChangeTextTitle] = useState("");
 	const [textDesc, onChangeTextDesc] = useState("");
 	const [todos, setTodos] = useState(todoData);
+	const [successMessageVisible, setSuccessMessageVisible] = useState(false);
+	const [warningMessageVisible, setWarningMessageVisible] = useState(false);
+	const [errorMessageVisible, setErrorMessageVisible] = useState(false);
+
+	// TODO: Create custom Message component to play animation of fading in/out.
 
 	const handleClear = () => {
 		onChangeTextTitle("");
@@ -33,17 +38,25 @@ export default function AddScreen() {
 			await FileSystem.writeAsStringAsync(filePath, jsonData, {
 				encoding: FileSystem.EncodingType.UTF8,
 			});
-			Alert.alert("Success!", "Succeeded to save todo data.");
-			console.log("Todo data saved successfully.");
+			setSuccessMessageVisible(true);
+			setTimeout(() => {
+				setSuccessMessageVisible(false);
+			}, 3000);
 		} catch (error) {
 			console.error("Error writing todo data: ", error);
-			Alert.alert("Error", "Failed to save todo data. Please try again.");
+			setErrorMessageVisible(true);
+			setTimeout(() => {
+				setErrorMessageVisible(false);
+			}, 3000);
 		}
 	};
 
 	const handleSubmit = async () => {
 		if (!textTitle.trim() || !textDesc.trim()) {
-			Alert.alert("Error", "Please enter both title and description.");
+			setWarningMessageVisible(true);
+			setTimeout(() => {
+				setWarningMessageVisible(false);
+			}, 3000);
 			return;
 		}
 
@@ -66,8 +79,6 @@ export default function AddScreen() {
 		onChangeTextDesc("");
 
 		Keyboard.dismiss();
-
-		Alert.alert("Success", "Todo item added successfully.");
 	};
 
 	return (
@@ -103,6 +114,21 @@ export default function AddScreen() {
 						title={"Submit"}
 					/>
 				</View>
+				{successMessageVisible && (
+					<ThemedText style={styles.successMsg}>
+						Success! Todo item saved!
+					</ThemedText>
+				)}
+				{warningMessageVisible && (
+					<ThemedText style={styles.warningMsg}>
+						Warning! Please enter both title and description.
+					</ThemedText>
+				)}
+				{errorMessageVisible && (
+					<ThemedText style={styles.errorMsg}>
+						Error! Failed to save todo data, please try again.
+					</ThemedText>
+				)}
 			</ScrollView>
 		</ThemedView>
 	);
@@ -127,5 +153,17 @@ const styles = StyleSheet.create({
 	},
 	button: {
 		flex: 1,
+	},
+	successMsg: {
+		color: "green",
+		alignSelf: "center",
+	},
+	warningMsg: {
+		color: "yellow",
+		alignSelf: "center",
+	},
+	errorMsg: {
+		color: "red",
+		alignSelf: "center",
 	},
 });
