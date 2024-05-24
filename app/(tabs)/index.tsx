@@ -95,7 +95,7 @@ export default function TodoScreen() {
 					<RefreshControl
 						refreshing={refreshing}
 						onRefresh={onRefresh}
-						colors={["#00FBB0"]}
+						tintColor={"#00FBB0"}
 					/>
 				}
 			/>
