@@ -1,4 +1,4 @@
-import { Alert, Button, Keyboard, StyleSheet, View } from "react-native";
+import { Alert, Keyboard, Platform, StyleSheet, View } from "react-native";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import { ScrollView } from "react-native-gesture-handler";
@@ -6,6 +6,7 @@ import { useState } from "react";
 import { ThemedTextInput } from "@/components/ThemedTextInput";
 import { ThemedButton } from "@/components/ThemedButton";
 import todoData from "@/db/todo-data.json";
+import fs from "react-native-fs";
 
 export default function AddScreen() {
 	const [textTitle, onChangeTextTitle] = useState("");
@@ -16,7 +17,36 @@ export default function AddScreen() {
 		onChangeTextDesc("");
 	};
 
-	const handleSubmit = () => {
+	const saveTodoDataToJsonFile = async (
+		data: {
+			id: string;
+			title: string;
+			description: string;
+			date_created: string;
+		}[]
+	) => {
+		const jsonData = JSON.stringify(data);
+		let filePath =
+			Platform.OS === "ios"
+				? fs.DocumentDirectoryPath + "/todo-data.json"
+				: fs.DocumentDirectoryPath + "/todo-data.json";
+
+		await fs
+			.writeFile(filePath, jsonData, "utf8")
+			.then((success) => {
+				Alert.alert("Success!", "Succeeded to save todo data.");
+				console.log("Todo data saved successfully.");
+			})
+			.catch((error) => {
+				console.error("Error writing todo data: ", error);
+				Alert.alert(
+					"Error",
+					"Failed to save todo data. Please try again."
+				);
+			});
+	};
+
+	const handleSubmit = async () => {
 		if (!textTitle.trim() || !textDesc.trim()) {
 			Alert.alert("Error", "Please enter both title and description.");
 			return;
@@ -32,9 +62,14 @@ export default function AddScreen() {
 		// Update the todoData array with new Todo item
 		todoData.push(newTodo);
 
+		// Save the updated todoData array to JSON file
+		await saveTodoDataToJsonFile(todoData);
+
 		// Reset input fields
 		onChangeTextTitle("");
 		onChangeTextDesc("");
+
+		Keyboard.dismiss();
 
 		Alert.alert("Success", "Todo item added successfully.");
 	};
