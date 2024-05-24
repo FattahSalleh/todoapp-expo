@@ -58,6 +58,11 @@ export default function TodoScreen() {
 		date_created: new Date(todo.date_created),
 	}));
 
+	// Sort the todos by date_created in descending order
+	todosConvertDate.sort(
+		(a, b) => b.date_created.getTime() - a.date_created.getTime()
+	);
+
 	return (
 		<ThemedView style={styles.container}>
 			<FlatList
