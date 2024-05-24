@@ -11,9 +11,10 @@ export default function AddScreen() {
 	const [textTitle, onChangeTextTitle] = useState("");
 	const [textDesc, onChangeTextDesc] = useState("");
 
-	// const handleClear = () => {
-
-	// }
+	const handleClear = () => {
+		onChangeTextTitle("");
+		onChangeTextDesc("");
+	};
 
 	const handleSubmit = () => {
 		if (!textTitle.trim() || !textDesc.trim()) {
@@ -61,7 +62,7 @@ export default function AddScreen() {
 					<ThemedButton
 						style={styles.button}
 						type="tertiary"
-						onPress={() => Alert.alert("Pressed")}
+						onPress={handleClear}
 						title={"Clear"}
 					/>
 					<ThemedButton
