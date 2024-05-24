@@ -4,7 +4,8 @@ import { useTheme } from "@/context/ThemeContext";
 import { StyleSheet } from "react-native";
 import { FlatList, RefreshControl } from "react-native-gesture-handler";
 import todoData from "@/db/todo-data.json";
-import { useState } from "react";
+import { useCallback, useState } from "react";
+import { useFocusEffect } from "expo-router";
 
 type TodoData = {
 	id: string;
@@ -74,8 +75,15 @@ export default function TodoScreen() {
 		setTimeout(() => {
 			setTodosItem(convertAndSortTodoData());
 			setRefreshing(false);
-		}, 1000);
+		}, 300);
 	};
+
+	// Auto-refresh when entering the page
+	const refreshTodoScreen = useCallback(() => {
+		onRefresh();
+	}, []);
+
+	useFocusEffect(refreshTodoScreen);
 
 	return (
 		<ThemedView style={styles.container}>
@@ -87,7 +95,7 @@ export default function TodoScreen() {
 					<RefreshControl
 						refreshing={refreshing}
 						onRefresh={onRefresh}
-						colors={["#00FBB0"]}
+						tintColor={"#00FBB0"}
 					/>
 				}
 			/>
