@@ -4,7 +4,7 @@ import { useTheme } from "@/context/ThemeContext";
 import { Alert, StyleSheet, TouchableOpacity } from "react-native";
 import { FlatList, RefreshControl } from "react-native-gesture-handler";
 import todoData from "@/db/todo-data.json";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useFocusEffect } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 import * as FileSystem from "expo-file-system";
@@ -72,7 +72,8 @@ const Item = ({ todoData, onDelete }: TodoProps) => {
 			<ThemedText style={styles.title}>{todoData.title}</ThemedText>
 			<ThemedText type="default">{todoData.description}</ThemedText>
 			<ThemedText style={[styles.date, { color: itemTextColor }]}>
-				Created on {todoData.date_created.toLocaleDateString()}
+				Created on{" "}
+				{new Date(todoData.date_created).toLocaleDateString()}
 			</ThemedText>
 			<TouchableOpacity onPress={handleDelete}>
 				<Ionicons
@@ -100,13 +101,28 @@ export default function TodoScreen() {
 		);
 	};
 
-	const [todosItem, setTodosItem] = useState(convertAndSortTodoData());
+	const [todosItem, setTodosItem] = useState([]);
+
+	const loadTodoData = async () => {
+		try {
+			let filePath = FileSystem.documentDirectory + "/todo-data.json";
+			const jsonData = await FileSystem.readAsStringAsync(filePath);
+			const parsedData = JSON.parse(jsonData);
+			setTodosItem(parsedData);
+		} catch (error) {
+			console.error("Error loading todo data: ", error);
+		}
+	};
+
+	useEffect(() => {
+		loadTodoData();
+	}, []);
 
 	const onRefresh = () => {
 		setRefreshing(true);
 		// Simulate delay and fetch item
 		setTimeout(() => {
-			setTodosItem(convertAndSortTodoData());
+			loadTodoData();
 			setRefreshing(false);
 		}, 300);
 	};
@@ -140,6 +156,8 @@ export default function TodoScreen() {
 					encoding: FileSystem.EncodingType.UTF8,
 				});
 
+				setTodosItem(todos);
+
 				Alert.alert("Deleted", "Successfully deleted the item.");
 			} else {
 				console.log("Todo item not found.");
@@ -151,9 +169,6 @@ export default function TodoScreen() {
 	};
 
 	const onDeleteItem = async (id: string) => {
-		const updatedTodos = todosItem.filter((todo) => todo.id !== id);
-		setTodosItem(updatedTodos);
-
 		await deleteTodoDataFromJsonFile(id);
 	};
 
