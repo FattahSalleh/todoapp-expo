@@ -2,8 +2,9 @@ import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import { useTheme } from "@/context/ThemeContext";
 import { StyleSheet } from "react-native";
-import { FlatList } from "react-native-gesture-handler";
+import { FlatList, RefreshControl } from "react-native-gesture-handler";
 import todoData from "@/db/todo-data.json";
+import { useState } from "react";
 
 type TodoData = {
 	id: string;
@@ -52,23 +53,43 @@ const Item = ({ todoData }: TodoProps) => {
 };
 
 export default function TodoScreen() {
-	// Convert string to Date format
-	const todosConvertDate = todoData.map((todo) => ({
-		...todo,
-		date_created: new Date(todo.date_created),
-	}));
+	const [refreshing, setRefreshing] = useState(false);
 
-	// Sort the todos by date_created in descending order
-	todosConvertDate.sort(
-		(a, b) => b.date_created.getTime() - a.date_created.getTime()
-	);
+	// Convert string to Date format and sort by date_created in descending order
+	const convertAndSortTodoData = () => {
+		const convertedTodos = todoData.map((todo) => ({
+			...todo,
+			date_created: new Date(todo.date_created),
+		}));
+		return convertedTodos.sort(
+			(a, b) => b.date_created.getTime() - a.date_created.getTime()
+		);
+	};
+
+	const [todosItem, setTodosItem] = useState(convertAndSortTodoData());
+
+	const onRefresh = () => {
+		setRefreshing(true);
+		// Simulate delay and fetch item
+		setTimeout(() => {
+			setTodosItem(convertAndSortTodoData());
+			setRefreshing(false);
+		}, 1000);
+	};
 
 	return (
 		<ThemedView style={styles.container}>
 			<FlatList
-				data={todosConvertDate}
+				data={todosItem}
 				renderItem={({ item }) => <Item todoData={item} />}
 				keyExtractor={(item) => item.id}
+				refreshControl={
+					<RefreshControl
+						refreshing={refreshing}
+						onRefresh={onRefresh}
+						colors={["#00FBB0"]}
+					/>
+				}
 			/>
 		</ThemedView>
 	);
