@@ -1,7 +1,7 @@
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import { useTheme } from "@/context/ThemeContext";
-import { Alert, StyleSheet, TouchableOpacity } from "react-native";
+import { Alert, StyleSheet, TouchableOpacity, View } from "react-native";
 import { FlatList, RefreshControl } from "react-native-gesture-handler";
 import { useCallback, useEffect, useState } from "react";
 import { useFocusEffect } from "expo-router";
@@ -68,20 +68,24 @@ const Item = ({ todoData, onDelete }: TodoProps) => {
 		<ThemedView
 			style={[styles.item, { backgroundColor: itemBackgroundColor }]}
 		>
-			<ThemedText style={styles.title}>{todoData.title}</ThemedText>
-			<ThemedText type="default">{todoData.description}</ThemedText>
-			<ThemedText style={[styles.date, { color: itemTextColor }]}>
-				Created on{" "}
-				{new Date(todoData.date_created).toLocaleDateString()}
-			</ThemedText>
-			<TouchableOpacity onPress={handleDelete}>
-				<Ionicons
-					name="trash-outline"
-					size={24}
-					color={"red"}
-					style={styles.deleteIcon}
-				/>
-			</TouchableOpacity>
+			<View style={styles.itemLeftSide}>
+				<ThemedText style={styles.title}>{todoData.title}</ThemedText>
+				<ThemedText type="default">{todoData.description}</ThemedText>
+				<ThemedText style={[styles.date, { color: itemTextColor }]}>
+					Created on{" "}
+					{new Date(todoData.date_created).toLocaleDateString()}
+				</ThemedText>
+			</View>
+			<View style={styles.itemRightSide}>
+				<TouchableOpacity onPress={handleDelete}>
+					<Ionicons
+						name="trash-outline"
+						size={24}
+						color={"red"}
+						style={styles.deleteIcon}
+					/>
+				</TouchableOpacity>
+			</View>
 		</ThemedView>
 	);
 };
@@ -206,7 +210,11 @@ const styles = StyleSheet.create({
 		marginHorizontal: 16,
 		borderRadius: 8,
 		position: "relative",
+		display: "flex",
+		flexDirection: "row",
 	},
+	itemLeftSide: { flex: 9 },
+	itemRightSide: { flex: 1 },
 	title: {
 		fontSize: 24,
 		fontWeight: "bold",
