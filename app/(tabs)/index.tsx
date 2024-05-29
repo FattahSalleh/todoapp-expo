@@ -3,7 +3,6 @@ import { ThemedView } from "@/components/ThemedView";
 import { useTheme } from "@/context/ThemeContext";
 import { Alert, StyleSheet, TouchableOpacity } from "react-native";
 import { FlatList, RefreshControl } from "react-native-gesture-handler";
-import todoData from "@/db/todo-data.json";
 import { useCallback, useEffect, useState } from "react";
 import { useFocusEffect } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
@@ -123,7 +122,6 @@ export default function TodoScreen() {
 		loadTodoData();
 	}, []);
 
-	// TODO: Check the refresh function to not reset the todosItem!!!
 	const onRefresh = () => {
 		setRefreshing(true);
 		// Simulate delay and fetch item
