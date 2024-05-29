@@ -123,13 +123,14 @@ export default function TodoScreen() {
 		loadTodoData();
 	}, []);
 
+	// TODO: Check the refresh function to not reset the todosItem!!!
 	const onRefresh = () => {
 		setRefreshing(true);
 		// Simulate delay and fetch item
-		setTimeout(() => {
-			loadTodoData();
-			setRefreshing(false);
+		setTimeout(async () => {
+			await loadTodoData();
 		}, 300);
+		setRefreshing(false);
 	};
 
 	// Auto-refresh when entering the page
@@ -161,7 +162,7 @@ export default function TodoScreen() {
 					encoding: FileSystem.EncodingType.UTF8,
 				});
 
-				setTodosItem(todos);
+				await loadTodoData();
 
 				Alert.alert("Deleted", "Successfully deleted the item.");
 			} else {
